@@ -1,0 +1,210 @@
+<html>
+	<head>
+		<meta charset="UTF-8">
+		<meta name="viewport" content="width=device-width, initial-scale=1">
+
+		<title>Dashboard Medición de Pobreza 2008-2018</title>
+
+		<script type="text/javascript" src="https://www.gstatic.com/charts/loader.js"></script>
+
+		<script src="charts.js"></script>
+		<link rel="stylesheet" href="style.css">
+	</head>
+
+	<body>
+		<h1>Dashboard CONEVAL: 10 Años de Medición de Pobreza (2008-2018)</h1>
+
+		<div class="dashboard-wrapper">
+			<div id='p1' class='panel'><h2>Evolución de Personas en Pobreza y Pobreza Extrema (Millones)</h2> <div id='p1Chart' style= 'width: 100%; height: 300px;'></div> </div>
+			<div id='p2' class='panel'><h2>Porcentaje de Población en Pobreza</h2> <div id='p2Chart' style= 'width: 100%; height : 150 px;'></div> </div>
+			<div id='p3' class='panel'><h2>Carencias Sociales Promedio por Persona</h2> <div id='p3Chart' style= 'width: 100%; height : 150 px;'></div> </div>
+			<div id='p4' class='panel'><h2>Cambio en el % de Población con Carencias Sociales (2008 vs 2018)</h2> <div id='p4Chart' style= 'width: 100%; height : 150 px;'></div> </div>
+			<div id='p5' class='panel'><h2>Evolución de Población con Ingreso Inferior a Líneas de Bienestar</h2> <div id='p5Chart' style= 'width: 100%; height: 250px'></div> </div>
+		</div>
+
+		<script>
+			google.charts.load('current', {'packages':['corechart']});
+			google.charts.setOnLoadCallback(drawCharts);
+
+			function drawCharts() {
+				// --- Gráfico 1: Gráfico de Líneas (Evolución Pobreza y Pobreza Extrema en Millones) ---
+				var dataP1 = google.visualization.arrayToDataTable([
+					['Año', 'Personas en Pobreza', 'Personas en Pobreza Extrema'],
+					['2008', 49.5, 12.3],
+					['2010', 52.8, 13.3],
+					['2012', 53.3, 11.5],
+					['2014', 55.3, 11.4],
+					['2016', 53.4, 9.4],
+					['2018', 52.4, 9.3]
+				]);
+
+				var optionsP1 = {
+					title: 'Número de personas en pobreza y pobreza extrema (Millones)',
+					hAxis: {title: 'Año', titleTextStyle: {color: '#333'}},
+					vAxis: {title: 'Millones de Personas', minValue: 0},
+				};
+
+				var chartP1 = new google.visualization.AreaChart(document.getElementById('p1Chart'));
+				chartP1.draw(dataP1, optionsP1);
+
+				// --- Gráfico 2: Gráfico de Columna (Porcentaje de Población en Pobreza) ---
+				var dataP2 = google.visualization.arrayToDataTable([
+					['Año', 'Porcentaje de Población en Pobreza %'],
+					['2008', 44.4],
+					['2010', 46.2],
+					['2012', 45.5],
+					['2014', 46.2],
+					['2016', 43.6],
+					['2018', 41.9]
+				]);
+
+				var optionsP2 = {
+					title: 'Porcentaje de la población en situación de pobreza',
+					vAxis: {title: 'Porcentaje (%)', minValue: 0},
+					legend: { position: 'none' },
+					colors: ['#28a745']
+				};
+
+				var chartP2 = new google.visualization.ColumnChart(document.getElementById('p2Chart'));
+				chartP2.draw(dataP2, optionsP2);
+
+				// --- Gráfico 3: Gráfico de Área (Carencias Sociales Promedio) ---
+				var dataP3 = google.visualization.arrayToDataTable([
+					['Año', 'Carencias Sociales Promedio'],
+					['2008', 2.5],
+					['2010', 2.5],
+					['2012', 2.4],
+					['2014', 2.3],
+					['2016', 2.1],
+					['2018', 1.9]
+				]);
+
+				var optionsP3 = {
+					title: 'Evolución del Promedio de Carencias Sociales por Persona',
+					vAxis: {title: 'Promedio de Carencias', minValue: 0},
+					hAxis: {title: 'Año'},
+					legend: { position: 'none' },
+					colors: ['#ffc107'],
+					areaOpacity: 0.4
+				};
+
+				var chartP3 = new google.visualization.AreaChart(document.getElementById('p3Chart'));
+				chartP3.draw(dataP3, optionsP3);
+
+				// --- Gráfico 4: Gráfico de Barras (Cambio en Carencias Sociales 2008 vs 2018) ---
+				var dataP4 = google.visualization.arrayToDataTable([
+					['Carencia', '2008', '2018'],
+					['Rezago educativo', 20.7, 19.0],
+					['Acceso a servicios de salud', 38.4, 16.2],
+					['Acceso a la seguridad social', 65.3, 57.3],
+					['Calidad y espacios de la vivienda', 16.5, 10.9],
+					['Servicios básicos en la vivienda', 19.7, 11.1],
+					['Acceso a la alimentación', 21.7, 17.3]
+				]);
+
+				var optionsP4 = {
+					title: 'Porcentaje de Población con Carencias Sociales por Año',
+					vAxis: {title: 'Carencia'},
+					hAxis: {title: 'Porcentaje (%)'},
+					bars: 'horizontal', // Hace que el gráfico sea de barras (horizontal)
+					legend: { position: 'bottom' },
+					series: {
+						0: { color: '#17a2b8' }, // 2008
+						1: { color: '#fd7e14' }  // 2018
+					}
+				};
+
+				var chartP4 = new google.visualization.BarChart(document.getElementById('p4Chart'));
+				chartP4.draw(dataP4, optionsP4);
+
+				// --- Gráfico 5: Gráfico Combinado (Línea para Bienestar, Columna para Mínimo) ---
+				var dataP5 = google.visualization.arrayToDataTable([
+					['Año', 'Línea de Bienestar Mínimo (%)', 'Línea de Bienestar (%)'],
+					['2008', 18.2, 50.5],
+					['2010', 19.3, 52.0],
+					['2012', 18.9, 51.6],
+					['2014', 20.6, 53.2],
+					['2016', 17.5, 50.6],
+					['2018', 16.8, 49.9]
+				]);
+
+				var optionsP5 = {
+					title : 'Población con Ingreso Inferior a las Líneas de Bienestar',
+					vAxis: {title: 'Porcentaje (%)'},
+					hAxis: {title: 'Año'},
+					seriesType: 'bars',
+					series: {
+						1: { type: 'line', color: '#6f42c1', targetAxisIndex: 0 }, // Línea de Bienestar (como línea)
+						0: { type: 'bars', color: '#e83e8c', targetAxisIndex: 0 }  // Línea de Bienestar Mínimo (como columna)
+					}
+				};
+
+				var chartP5 = new google.visualization.ComboChart(document.getElementById('p5Chart'));
+				chartP5.draw(dataP5, optionsP5);
+			}
+
+		</script>
+
+		<style>
+			/* Color de fondo gris, tipo de letra helvetica. El 'text-align: center' es para centrar el dashboard */
+			body {
+				text-align: center;
+				background-color: #ececec;
+				font-family: 'Helvetica', sans-serif;
+				}
+
+			/* Quitamos los margenes de los títulos tipo 2. Los de los distintos paneles */
+			h2 {
+				margin: 0px;
+				font-size: 16px; /* Ajuste para un título más compacto */
+				}
+
+			/* Márgenes en auto para que quede centrado en la página.
+				Tamaño máximo de 920 píxeles.
+				configuración del grid a 3 columnas con un espaciado de 15 píxeles. */
+
+			.dashboard-wrapper {
+				margin: auto;
+				max-width: 920px;
+				display: grid;
+				grid-template-columns: 1fr 1fr 1fr;
+				grid-column-gap: 15px;
+				grid-row-gap: 15px;
+				}
+
+			/* Configuración de cada panel: texto alineado a la izquierda, color de fondo blanco, etc. */
+			.dashboard-wrapper .panel {
+				text-align: left;
+				background-color: #fff;
+				border: 1px solid #d3d3d3;
+				box-shadow: 0 0 4px 1px rgba(143,143,143,.2);
+				padding: 15px;
+				}
+
+			/* Los paneles con Id p1 y p5 ocuparan de la columna 1 a la 4 */
+			.dashboard-wrapper #p1.panel, .dashboard-wrapper #p5.panel {
+				grid-column: 1 / 4;
+				}
+
+			/* Configuración del footer */
+			.bottom {
+				font-size: 10px;
+				margin-top: 15px;
+				}
+
+			.bottom a {
+				color: #333;
+				text-decoration: none;
+				}
+
+			/* Configuración responsive: para dispositivos con pantalla de máximo 104 píxeles de resolución. todos los paneles ocuparán de la columna 1 a la 4 */
+			@media screen and (max-width: 1024px) {
+				.dashboard-wrapper .panel {
+					grid-column: 1 / 4;
+					}
+				}
+		</style>
+		<div class='bottom'><a target='_blank' href=''>Hecho para la actividad 8 de Visualisación gráfica de datos. Brandon Brayan Ruiz Segovovia</a></div>
+	</body>
+</html>
+
